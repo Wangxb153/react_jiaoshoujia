@@ -28,8 +28,8 @@ module.exports = {
                 include: path.join(__dirname,'src')
             },
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                test:/\.css$/,
+                use: ['style-loader','css-loader']
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -55,6 +55,5 @@ module.exports = {
         // proxy代理
         proxy: {}
     },
-    // devtools配置，查看详细的错误信息
     devtool: 'inline-source-map'
 }
