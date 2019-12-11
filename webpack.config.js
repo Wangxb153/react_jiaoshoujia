@@ -1,7 +1,9 @@
 const path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
     devtool: 'cheap-module-source-map',
@@ -14,7 +16,8 @@ module.exports = {
     output: {
         path: path.join(__dirname, './dist'),
         filename: '[name].[chunkhash].js',
-        chunkFilename: '[name].[chunkhash].js'
+        chunkFilename: '[name].[chunkhash].js',
+        publicPath: '/'
     },
     module: {
         rules: [{
@@ -23,7 +26,10 @@ module.exports = {
             include: path.join(__dirname, 'src')
         }, {
             test: /\.css$/,
-            use: ['style-loader', 'css-loader']
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: 'css-loader'
+            })
         }, {
             test: /\.(png|jpg|gif)$/,
             use: [{
@@ -42,7 +48,23 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor'
         }),
-        new UglifyJSPlugin()
+        new UglifyJSPlugin(),
+        new webpack.DefinePlugin({
+            'process_env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
+        new webpack.HashedModuleIdsPlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'runtime'
+        }),
+        // 打包优化，每次打包前自动清理dist文件
+        new CleanWebpackPlugin(['dist']),
+        // css抽取，打包时将css文件单独生成
+        new ExtractTextPlugin({
+            filename: '[name].[contenthash:5].css',
+            allChunks: true
+        })
     ],
 
     resolve: {
