@@ -24,10 +24,13 @@ function getUserInfoFail () {
 }
 
 export function getUserInfo() {
+    // return {
+    //     promise: client => client.get('/api/user')
+    // }
     const { get } = type
     return function(dispatch) {
         dispatch(getUserInfoRequest())
-        return get('http://127.0.0.1:8888/api/user.json')
+        return get('/api/user')
             .then(res => {
                 console.log(res)
                 dispatch(getUserInfoSuccess(res))

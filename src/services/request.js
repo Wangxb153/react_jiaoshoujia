@@ -75,14 +75,14 @@ function axiosRequest(method, url, params) {
         params = params
     }
     // debugger
-    const root = 'http://127.0.0.1:8888'
+    // const root = 'http://127.0.0.1:8080'
     return new Promise((resolve, reject) => {
         axios({
             method: method,
             url: url,
             data: method === 'POST' || method === 'PUT' ? params : null,
             params: method === 'GET' || method === 'DELETE' ? params : null,
-            baseURL: root,
+            // baseURL: root,
             withCredentials: true
         }).then(res => {
             console.log(res.data)
