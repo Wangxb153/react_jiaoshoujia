@@ -25,7 +25,7 @@ module.exports = {
             use: ['babel-loader'],
             include: path.join(__dirname, 'src')
         }, {
-            test: /\.css$/,
+            test: /\.(css|less)$/,
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: 'css-loader'
